@@ -2020,6 +2020,18 @@ def validate_configuration_explainers() -> None:
                 )
 
 
+def workflow_uses(workflow: str, reference: str) -> bool:
+    """Match `action@ref` either directly or pinned to a commit SHA with a `# ref` comment."""
+    if "@" not in reference:
+        return reference in workflow
+    action, ref = reference.split("@", 1)
+    pattern = (
+        rf"uses:\s*{re.escape(action)}@(?:{re.escape(ref)}\b"
+        rf"|[0-9a-f]{{40}}\s+#\s*{re.escape(ref)}(?:[.\s]|$))"
+    )
+    return re.search(pattern, workflow, re.MULTILINE) is not None
+
+
 def validate_workflows() -> None:
     required_setup = (
         ("actions/setup-dotnet@v6", "dotnet-version: 10.0.x"),
@@ -2033,7 +2045,7 @@ def validate_workflows() -> None:
     validation_workflow = read(ROOT / ".github" / "workflows" / "validate.yml")
     for expected in required_setup:
         for value in expected:
-            require(value in validation_workflow, f"validate.yml is missing required validation setup: {value}")
+            require(workflow_uses(validation_workflow, value), f"validate.yml is missing required validation setup: {value}")
 
     deployment_workflow = read(ROOT / ".github" / "workflows" / "deploy.yml")
     for forbidden in (
@@ -2055,7 +2067,7 @@ def validate_workflows() -> None:
         "actions/upload-pages-artifact@v5",
         "actions/deploy-pages@v5",
     ):
-        require(required in deployment_workflow, f"deploy.yml is missing deployment step: {required}")
+        require(workflow_uses(deployment_workflow, required), f"deploy.yml is missing deployment step: {required}")
 
 
 validate_language_registry()
