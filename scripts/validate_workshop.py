@@ -98,7 +98,7 @@ LESSON_TRACK_MARKERS = {
     ),
     "java": (
         "src/main/java/",
-        "mvn compile",
+        "./mvnw compile",
         "```java",
         "finished/java/",
     ),
@@ -109,7 +109,7 @@ STEP_3_TRACK_MARKERS = {
     "python": ("workshop.py", '@define_tool(', "python main.py"),
     "go": ("main.go", "copilot.DefineTool(", "go run ."),
     "rust": ("src/main.rs", 'Tool::new("accessibility_rule_lookup")', "cargo run"),
-    "java": ("AccessibilityReport.java", "ToolDefinition.from(", "mvn compile exec:java"),
+    "java": ("AccessibilityReport.java", "ToolDefinition.from(", "./mvnw compile exec:java"),
 }
 # Every command runs from inside the starter directory the learner already sits in.
 # No lesson may reintroduce a copied sibling project.
@@ -119,7 +119,7 @@ RUN_COMMAND_MARKERS = {
     "python": "python main.py",
     "go": "go run .",
     "rust": "cargo run",
-    "java": "mvn compile exec:java",
+    "java": "./mvnw compile exec:java",
 }
 STEP_9_RUN_COMMAND_MARKERS = {
     "dotnet": "dotnet run",
@@ -127,7 +127,7 @@ STEP_9_RUN_COMMAND_MARKERS = {
     "python": "python main.py",
     "go": "go run .",
     "rust": "cargo run --",
-    "java": "mvn compile exec:java",
+    "java": "./mvnw compile exec:java",
 }
 MUSEUM_COMMAND_MARKERS = {
     "dotnet": (
@@ -146,7 +146,7 @@ MUSEUM_COMMAND_MARKERS = {
         "cargo run",
     ),
     "java": (
-        "mvn compile exec:java",
+        "./mvnw compile exec:java",
     ),
 }
 MUSEUM_ENTRYPOINTS = {
@@ -166,6 +166,7 @@ SECOND_PROJECT_MARKERS = (
     "go mod init",
     "npm init ",
     "mvn archetype:generate",
+    "./mvnw archetype:generate",
 )
 IN_PLACE_FORBIDDEN_MARKERS = (
     "workshop-app",
@@ -178,6 +179,7 @@ MUSEUM_FORBIDDEN_LESSON_MARKERS = (
     "go test",
     "cargo test",
     "mvn test",
+    "./mvnw test",
     "python -m unittest",
     "unittest",
     "mock-wikipedia",
